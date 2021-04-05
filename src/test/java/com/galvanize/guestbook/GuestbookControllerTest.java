@@ -7,9 +7,11 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 
 import javax.transaction.Transactional;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -41,5 +43,25 @@ public class GuestbookControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
         )
                 .andExpect(status().isCreated());
+    }
+
+    @Test
+    void getOneEntryTest() throws Exception{
+        CommentDto input = new CommentDto("John", "Hi,there");
+        mockMvc.perform(
+                post("/guestbook")
+                        .content(objectMapper.writeValueAsString(input))
+                        .contentType(MediaType.APPLICATION_JSON)
+        )
+                .andExpect(status().isCreated());
+
+        MvcResult mvcResult = mockMvc.perform(get("/guestbook")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn();
+        String commentDtoString = mvcResult.getResponse().getContentAsString();
+        CommentDto returnedCommentDto = objectMapper.readValue(commentDtoString, CommentDto.class);
+        assertEquals(input,returnedCommentDto);
+
     }
 }
