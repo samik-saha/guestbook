@@ -11,6 +11,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import javax.transaction.Transactional;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -25,10 +26,20 @@ public class GuestbookControllerTest {
     ObjectMapper objectMapper;
 
     @Test
-    void getList() throws Exception {
+    void getNoEntriesTest() throws Exception {
         mockMvc.perform(get("/guestbook").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("length()").value(0));
     }
 
+    @Test
+    void postOneEntryTest() throws Exception{
+        CommentDto input = new CommentDto("John", "Hi,there");
+        mockMvc.perform(
+                post("/guestbook")
+                        .content(objectMapper.writeValueAsString(input))
+                        .contentType(MediaType.APPLICATION_JSON)
+        )
+                .andExpect(status().isCreated());
+    }
 }
