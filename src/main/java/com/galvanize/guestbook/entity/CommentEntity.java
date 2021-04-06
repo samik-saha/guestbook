@@ -1,4 +1,4 @@
-package com.galvanize.guestbook.repository.entity;
+package com.galvanize.guestbook.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,7 +13,7 @@ import javax.persistence.Id;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class Comment {
+public class CommentEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -22,7 +22,7 @@ public class Comment {
 
     private String comment;
 
-    public Comment(String name, String comment) {
+    public CommentEntity(String name, String comment) {
         this.name = name;
         this.comment = comment;
     }
