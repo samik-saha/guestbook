@@ -1,5 +1,6 @@
 package com.galvanize.guestbook;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 import javax.transaction.Transactional;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -60,8 +65,8 @@ public class GuestbookControllerTest {
                 .andExpect(status().isOk())
                 .andReturn();
         String commentDtoString = mvcResult.getResponse().getContentAsString();
-        CommentDto returnedCommentDto = objectMapper.readValue(commentDtoString, CommentDto.class);
-        assertEquals(input,returnedCommentDto);
+        List<CommentDto> returnedCommentDto = objectMapper.readValue(commentDtoString, new TypeReference<ArrayList<CommentDto>>(){});
+        assertEquals(Arrays.asList(input),returnedCommentDto);
 
     }
 }
