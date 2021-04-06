@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -16,8 +17,13 @@ public class GuestbookService {
     @Autowired
     private CommentRepository commentRepository;
 
-    public List<CommentEntity> getComments() {
-        return commentRepository.findAll();
+    public List<CommentDto> getComments() {
+        return commentRepository.findAll().stream()
+                .map(commentEntity -> {
+                    return new CommentDto(
+                            commentEntity.getName(),
+                            commentEntity.getComment());
+                }).collect(Collectors.toList());
     }
 
     public void addComment(CommentDto commentDto) {
