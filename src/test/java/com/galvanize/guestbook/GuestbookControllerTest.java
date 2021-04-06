@@ -69,4 +69,32 @@ public class GuestbookControllerTest {
         assertEquals(Arrays.asList(input),returnedCommentDto);
 
     }
+
+    @Test
+    void getManyEntriesTest() throws Exception{
+        CommentDto input1 = new CommentDto("John", "Hi,there");
+        CommentDto input2 = new CommentDto("ABC", "XYZ");
+
+        mockMvc.perform(
+                post("/guestbook")
+                        .content(objectMapper.writeValueAsString(input1))
+                        .contentType(MediaType.APPLICATION_JSON)
+        );
+
+        mockMvc.perform(
+                post("/guestbook")
+                        .content(objectMapper.writeValueAsString(input2))
+                        .contentType(MediaType.APPLICATION_JSON)
+        );
+
+        MvcResult mvcResult = mockMvc.perform(get("/guestbook")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        String commentDtoString = mvcResult.getResponse().getContentAsString();
+        List<CommentDto> returnedCommentDto = objectMapper.readValue(commentDtoString, new TypeReference<ArrayList<CommentDto>>(){});
+        assertEquals(Arrays.asList(input1, input2),returnedCommentDto);
+
+    }
 }
