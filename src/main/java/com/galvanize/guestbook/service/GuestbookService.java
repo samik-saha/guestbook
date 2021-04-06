@@ -1,6 +1,6 @@
 package com.galvanize.guestbook.service;
 
-import com.galvanize.guestbook.CommentDto;
+import com.galvanize.guestbook.dto.CommentDto;
 import com.galvanize.guestbook.repository.CommentRepository;
 import com.galvanize.guestbook.entity.CommentEntity;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package com.galvanize.guestbook;
+package com.galvanize.guestbook.dto;
 
 
 import lombok.AllArgsConstructor;

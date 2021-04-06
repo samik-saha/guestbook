@@ -1,5 +1,6 @@
-package com.galvanize.guestbook;
+package com.galvanize.guestbook.service;
 
+import com.galvanize.guestbook.dto.CommentDto;
 import com.galvanize.guestbook.repository.CommentRepository;
 import com.galvanize.guestbook.entity.CommentEntity;
 import com.galvanize.guestbook.service.GuestbookService;

@@ -1,5 +1,6 @@
-package com.galvanize.guestbook;
+package com.galvanize.guestbook.controller;
 
+import com.galvanize.guestbook.dto.CommentDto;
 import com.galvanize.guestbook.service.GuestbookService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
