@@ -1,0 +1,18 @@
+= Guestbook API
+
+Add Comment
+
+.request
+include::../../../build/generated-snippets/Add Comment/http-request.adoc[]
+
+.response
+include::../../../build/generated-snippets/Add Comment/http-response.adoc[]
+
+
+Get Comments
+
+.request
+include::../../../build/generated-snippets/Comments/http-request.adoc[]
+
+.response
+include::../../../build/generated-snippets/Comments/http-response.adoc[]

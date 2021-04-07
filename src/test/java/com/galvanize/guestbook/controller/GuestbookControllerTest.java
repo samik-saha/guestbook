@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.galvanize.guestbook.dto.CommentDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
@@ -12,12 +13,14 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 import javax.transaction.Transactional;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -26,6 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @Transactional
+@AutoConfigureRestDocs
 public class GuestbookControllerTest {
     @Autowired
     MockMvc mockMvc;
@@ -48,7 +52,8 @@ public class GuestbookControllerTest {
                         .content(objectMapper.writeValueAsString(input))
                         .contentType(MediaType.APPLICATION_JSON)
         )
-                .andExpect(status().isCreated());
+                .andExpect(status().isCreated())
+                .andDo(document("Add Comment"));;
     }
 
     @Test
@@ -64,6 +69,9 @@ public class GuestbookControllerTest {
         MvcResult mvcResult = mockMvc.perform(get("/guestbook")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
+                .andDo(document("Comments", responseFields(
+                        fieldWithPath("[0].name").description("Name"),
+                        fieldWithPath("[0].comment").description("Comment"))))
                 .andReturn();
         String commentDtoString = mvcResult.getResponse().getContentAsString();
         List<CommentDto> returnedCommentDto = objectMapper.readValue(commentDtoString, new TypeReference<ArrayList<CommentDto>>(){});
