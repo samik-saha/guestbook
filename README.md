@@ -27,4 +27,20 @@ Run application in Docker container
 
     docker run --name guestbook --network guestbook-net -e PORT=8080 -e SPRING_PROFILES_ACTIVE=docker -p 9000:8080 -d guestbook:dev
 
-    
+
+## Instructions for Deploying to Heroku
+
+* Create a heroku app
+* Add a postgres database addon
+* Set environment variable `SPRING_PROFILES_ACTIVE = heroku`
+* Login to heroku from cli
+      
+      heroku container:login
+  
+* Push Docker based app to heroku  
+
+      heroku container:push -a <app_name> web
+
+* Release heroku app
+
+      heroku container:release -a <app_name> web
